@@ -1,0 +1,8 @@
+div {
+  background-color: aliceblue;
+}
+
+div:hover {
+  cursor: pointer;
+}
+
