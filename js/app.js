@@ -6,7 +6,7 @@ let allProducts = [];
 // let indexArray = [];
 let imageOne = document.querySelector('section img:first-child');
 let imageTwo = document.querySelector('section img:nth-child(2)');
-// let imageThree = document.querySelector('section img:last-child');
+let imageThree = document.querySelector('section img:last-child');
 
 // what listener is listening to
 let myContainer = document.querySelector('section');
@@ -50,14 +50,11 @@ function getRandomIndex() {
 function renderProducts() {
   let firstProductIndex = getRandomIndex();
   let secondProductIndex = getRandomIndex();
-  // let thirdProductIndex = getRandomIndex();
+  let thirdProductIndex = getRandomIndex();
+
   // in lab today ryan recommends using an Index Array, name it indexArray
   // check to see if the index is INCLUDED in the aray *hint hint*
   // pop those results from the array or shift? maybe?
-
-  while (firstProductIndex === secondProductIndex) {
-    secondProductIndex = getRandomIndex;
-  }
   imageOne.src = allProducts[firstProductIndex].src;
   imageOne.title = allProducts[firstProductIndex].name;
   allProducts[firstProductIndex].views++;
@@ -66,9 +63,22 @@ function renderProducts() {
   imageTwo.title = allProducts[secondProductIndex].name;
   allProducts[secondProductIndex].views++;
 
-  // imageThree.src = allProducts[thirdProductIndex].src;
-  // imageThree.title = allProducts[thirdProductIndex].name;
-  // allProducts[thirdProductIndex].views++;
+  imageThree.src = allProducts[thirdProductIndex].src;
+  imageThree.title = allProducts[thirdProductIndex].name;
+  allProducts[thirdProductIndex].views++;
+
+  let indexArray = [imageOne, imageTwo, imageThree];
+
+  for (let i = 0; i < indexArray.length; i++)
+    while (indexArray[0] === indexArray[1]) {
+      indexArray[0] = getRandomIndex();
+    }
+  while (indexArray[0] === indexArray[2]) {
+    indexArray[0] = getRandomIndex();
+  }
+  while (indexArray[1] === indexArray[2]) {
+    indexArray[1] = getRandomIndex();
+  }
 }
 
 function renderResults() {
@@ -79,7 +89,6 @@ function renderResults() {
     myList.appendChild(li);
   }
 }
-// console.log(renderResults);
 
 function handleClick(event) {
   if (event.target === myContainer) {
@@ -96,7 +105,6 @@ function handleClick(event) {
   renderProducts();
   if (totalClicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleClick);
-    renderResults();
   }
 }
 renderProducts();
