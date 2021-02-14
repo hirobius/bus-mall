@@ -1,8 +1,9 @@
 'use strict';
 
 let totalClicks = 0;
-let clicksAllowed = 5;
+let clicksAllowed = 25;
 let allProducts = [];
+
 // let indexArray = [];
 let imageOne = document.querySelector('section img:first-child');
 let imageTwo = document.querySelector('section img:nth-child(2)');
@@ -52,9 +53,16 @@ function renderProducts() {
   let secondProductIndex = getRandomIndex();
   let thirdProductIndex = getRandomIndex();
 
-  // in lab today ryan recommends using an Index Array, name it indexArray
-  // check to see if the index is INCLUDED in the aray *hint hint*
-  // pop those results from the array or shift? maybe?
+  while (firstProductIndex === secondProductIndex) {
+    secondProductIndex = getRandomIndex();
+  }
+  while (secondProductIndex === thirdProductIndex) {
+    thirdProductIndex = getRandomIndex();
+  }
+  while (firstProductIndex === thirdProductIndex) {
+    thirdProductIndex = getRandomIndex();
+  }
+
   imageOne.src = allProducts[firstProductIndex].src;
   imageOne.title = allProducts[firstProductIndex].name;
   allProducts[firstProductIndex].views++;
@@ -66,26 +74,13 @@ function renderProducts() {
   imageThree.src = allProducts[thirdProductIndex].src;
   imageThree.title = allProducts[thirdProductIndex].name;
   allProducts[thirdProductIndex].views++;
-
-  let indexArray = [imageOne, imageTwo, imageThree];
-
-  for (let i = 0; i < indexArray.length; i++)
-    while (indexArray[0] === indexArray[1]) {
-      indexArray[0] = getRandomIndex();
-    }
-  while (indexArray[0] === indexArray[2]) {
-    indexArray[0] = getRandomIndex();
-  }
-  while (indexArray[1] === indexArray[2]) {
-    indexArray[1] = getRandomIndex();
-  }
 }
 
 function renderResults() {
   let myList = document.querySelector('ul');
   for (let i = 0; i < allProducts.length; i++) {
     let li = document.createElement('li');
-    li.textContent = `${allProducts[i].name} had ${allProducts[i].clicks} votes and was seen ${allProducts[i].views} times`;
+    li.textContent = `${allProducts[i].name} had ${allProducts[i].clicks} votes, and was seen ${allProducts[i].views} times`;
     myList.appendChild(li);
   }
 }
@@ -107,17 +102,14 @@ function handleClick(event) {
     myContainer.removeEventListener('click', handleClick);
   }
 }
-renderProducts();
 
-function handleButtonClick(event) { //disable-eslint-line
+function handleButtonClick() {//disable-eslint-line
   if (totalClicks === clicksAllowed) {
     renderResults();
   }
 }
 
+renderProducts();
 
 myContainer.addEventListener('click', handleClick);
 myButton.addEventListener('click', handleButtonClick);
-
-// side note: we need to show the % of times an item is clicked when shown (???)
-// custom font, color palette, layout with semantic HTML, and so on.

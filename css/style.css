@@ -1,9 +1,60 @@
+body {
+  background-color: #202124;
+}
+
+h2 {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 3em;
+  font-weight: 700;
+  margin: 32px;
+  text-align: center;
+  color: aliceblue;
+}
+
+section {
+  width: max-content;
+  height: max-content;
+  background-color: aliceblue;
+  border-radius: 6px;
+  margin: auto;
+  vertical-align: middle;
+}
+
+section img {
+  margin: 20px;
+  width: 140px;
+  max-height: 320px;
+  vertical-align: middle;
+}
+
+section img:hover {
+  cursor: pointer;
+  opacity: 75%;
+}
+
 div {
   background-color: aliceblue;
-  padding: 15px;
+  color: #202124;
+  font-family: 'Newsreader', serif;
+  font-weight: 500;
+  font-size: 1em;
+  width: max-content;
+  padding: 12px;
+  border-radius: 6px;
+  margin: auto;
+  margin-top: 32px;
 }
 
 div:hover {
   cursor: pointer;
+  opacity: 90%;
+  transition: 150ms;
 }
 
+ul {
+  font-family: 'Newsreader', serif;
+  color: white;
+  line-height: 125%;
+  text-align: right;
+}
