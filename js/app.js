@@ -3,17 +3,13 @@
 let totalClicks = 0;
 let clicksAllowed = 25;
 let allProducts = [];
-
-// let indexArray = [];
+let indexArray = [];
+// key for shifting the new set of 3 images
+let uniqueImageCount = 6;
 let imageOne = document.querySelector('section img:first-child');
 let imageTwo = document.querySelector('section img:nth-child(2)');
 let imageThree = document.querySelector('section img:last-child');
-
-// what listener is listening to
 let myContainer = document.querySelector('section');
-
-// button
-let myButton = document.querySelector('div');
 
 function Product(name, fileExtension = 'jpg') {
   this.name = name;
@@ -49,19 +45,15 @@ function getRandomIndex() {
 }
 
 function renderProducts() {
-  let firstProductIndex = getRandomIndex();
-  let secondProductIndex = getRandomIndex();
-  let thirdProductIndex = getRandomIndex();
-
-  while (firstProductIndex === secondProductIndex) {
-    secondProductIndex = getRandomIndex();
+  while (indexArray.length < uniqueImageCount) {
+    let randomIndex = getRandomIndex();
+    while (!indexArray.includes(randomIndex)) {
+      indexArray.push(randomIndex);
+    }
   }
-  while (secondProductIndex === thirdProductIndex) {
-    thirdProductIndex = getRandomIndex();
-  }
-  while (firstProductIndex === thirdProductIndex) {
-    thirdProductIndex = getRandomIndex();
-  }
+  let firstProductIndex = indexArray.shift();
+  let secondProductIndex = indexArray.shift();
+  let thirdProductIndex = indexArray.shift();
 
   imageOne.src = allProducts[firstProductIndex].src;
   imageOne.title = allProducts[firstProductIndex].name;
@@ -74,15 +66,6 @@ function renderProducts() {
   imageThree.src = allProducts[thirdProductIndex].src;
   imageThree.title = allProducts[thirdProductIndex].name;
   allProducts[thirdProductIndex].views++;
-}
-
-function renderResults() {
-  let myList = document.querySelector('ul');
-  for (let i = 0; i < allProducts.length; i++) {
-    let li = document.createElement('li');
-    li.textContent = `${allProducts[i].name} had ${allProducts[i].clicks} votes, and was seen ${allProducts[i].views} times`;
-    myList.appendChild(li);
-  }
 }
 
 function handleClick(event) {
@@ -100,66 +83,52 @@ function handleClick(event) {
   renderProducts();
   if (totalClicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleClick);
+    renderChart();
   }
 }
-
-function handleButtonClick() {//disable-eslint-line
-  if (totalClicks === clicksAllowed) {
-    renderResults();
-  }
-}
-
 renderProducts();
 
-myContainer.addEventListener('click', handleClick);
-myButton.addEventListener('click', handleButtonClick);
+function renderChart() {
+  let productNames = [];
+  let productViews = [];
+  let productClicks = [];
 
+  for (let i = 0; i < allProducts.length; i++) {
+    productNames.push(allProducts[i].name);
+    productViews.push(allProducts[i].views);
+    productClicks.push(allProducts[i].clicks);
+  }
 
-let productNames = [];
-let productViews = [];
-let productClicks = [];
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
 
-for (let i = 0; i < allProducts.length; i++) {
-  productNames.push(allProducts[i].name);
-  productViews.push(allProducts[i].views);
-  productClicks.push(allProducts[i].clicks);
+    // The data for our dataset
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Views',
+        backgroundColor: 'rgb(207, 204, 214)',
+        data: productViews
+      },
+      {
+        label: 'Clicks',
+        backgroundColor: 'rgb(183, 181, 228)',
+        data: productClicks
+      }]
+    },
+    responsive: false,
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
+  });
 }
 
-var ctx = document.getElementById('myChart').getContext('2d');
-var myChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
-    datasets: [{
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      yAxes: [{
-        ticks: {
-          beginAtZero: true
-        }
-      }]
-    }
-  }
-});
-
+myContainer.addEventListener('click', handleClick);

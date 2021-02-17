@@ -24,7 +24,7 @@ section {
 section img {
   margin: 20px;
   width: 140px;
-  max-height: 320px;
+  height: 140px;
   vertical-align: middle;
 }
 
@@ -33,6 +33,7 @@ section img:hover {
   opacity: 75%;
 }
 
+/* Button DIV element and its Hover */
 div {
   background-color: aliceblue;
   color: #202124;
@@ -57,4 +58,9 @@ ul {
   color: white;
   line-height: 125%;
   text-align: right;
+}
+
+#chart {
+  width: 548px;
+  margin-top: 10px;
 }
