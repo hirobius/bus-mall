@@ -3,17 +3,12 @@
 let totalClicks = 0;
 let clicksAllowed = 25;
 let allProducts = [];
-
-// let indexArray = [];
+let indexArray = [];
+let uniqueImageCount = 6;
 let imageOne = document.querySelector('section img:first-child');
 let imageTwo = document.querySelector('section img:nth-child(2)');
 let imageThree = document.querySelector('section img:last-child');
-
-// what listener is listening to
 let myContainer = document.querySelector('section');
-
-// button
-let myButton = document.querySelector('div');
 
 function Product(name, fileExtension = 'jpg') {
   this.name = name;
@@ -48,20 +43,17 @@ function getRandomIndex() {
   return Math.floor(Math.random() * allProducts.length);
 }
 
-function renderProducts() {
-  let firstProductIndex = getRandomIndex();
-  let secondProductIndex = getRandomIndex();
-  let thirdProductIndex = getRandomIndex();
 
-  while (firstProductIndex === secondProductIndex) {
-    secondProductIndex = getRandomIndex();
+function renderProducts() {
+  while (indexArray.length < uniqueImageCount) {
+    let randomIndex = getRandomIndex();
+    while (!indexArray.includes(randomIndex)) {
+      indexArray.push(randomIndex);
+    }
   }
-  while (secondProductIndex === thirdProductIndex) {
-    thirdProductIndex = getRandomIndex();
-  }
-  while (firstProductIndex === thirdProductIndex) {
-    thirdProductIndex = getRandomIndex();
-  }
+  let firstProductIndex = indexArray.shift();
+  let secondProductIndex = indexArray.shift();
+  let thirdProductIndex = indexArray.shift();
 
   imageOne.src = allProducts[firstProductIndex].src;
   imageOne.title = allProducts[firstProductIndex].name;
@@ -74,15 +66,6 @@ function renderProducts() {
   imageThree.src = allProducts[thirdProductIndex].src;
   imageThree.title = allProducts[thirdProductIndex].name;
   allProducts[thirdProductIndex].views++;
-}
-
-function renderResults() {
-  let myList = document.querySelector('ul');
-  for (let i = 0; i < allProducts.length; i++) {
-    let li = document.createElement('li');
-    li.textContent = `${allProducts[i].name} had ${allProducts[i].clicks} votes, and was seen ${allProducts[i].views} times`;
-    myList.appendChild(li);
-  }
 }
 
 function handleClick(event) {
@@ -100,51 +83,46 @@ function handleClick(event) {
   renderProducts();
   if (totalClicks === clicksAllowed) {
     myContainer.removeEventListener('click', handleClick);
+    renderChart();
   }
 }
-
-function handleButtonClick() {//disable-eslint-line
-  if (totalClicks === clicksAllowed) {
-    renderResults();
-  }
-}
-
 renderProducts();
 
-myContainer.addEventListener('click', handleClick);
-myButton.addEventListener('click', handleButtonClick);
+function renderChart() {
+  let productNames = [];
+  let productViews = [];
+  let productClicks = [];
 
+  for (let i = 0; i < allProducts.length; i++) {
+    productNames.push(allProducts[i].name);
+    productViews.push(allProducts[i].views);
+    productClicks.push(allProducts[i].clicks);
+  }
 
-let productNames = [];
-let productViews = [];
-let productClicks = [];
+  var ctx = document.getElementById('myChart').getContext('2d');
+  var chart = new Chart(ctx, {
+    // The type of chart we want to create
+    type: 'bar',
 
-for (let i = 0; i < allProducts.length; i++) {
-  productNames.push(allProducts[i].name);
-  productViews.push(allProducts[i].views);
-  productClicks.push(allProducts[i].clicks);
+    // The data for our dataset
+    data: {
+      labels: productNames,
+      datasets: [{
+        label: 'Clicks',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: productViews
+      },
+      {
+        label: 'Views',
+        backgroundColor: 'rgb(255, 99, 132)',
+        borderColor: 'rgb(255, 99, 132)',
+        data: productClicks
+      }]
+    },
+    // Configuration options go here
+    options: {}
+  });
 }
 
-
-var ctx = document.getElementById('myChart').getContext('2d');
-var chart = new Chart(ctx, {
-  // The type of chart we want to create
-  type: 'bar',
-
-  // The data for our dataset
-  data: {
-    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-    datasets: [{
-      label: 'My First dataset',
-      backgroundColor: 'rgb(255, 99, 132)',
-      borderColor: 'rgb(255, 99, 132)',
-      data: [0, 10, 5, 2, 20, 30, 45]
-    }]
-  },
-
-  // Configuration options go here
-  options: {}
-});
-
-
-
+myContainer.addEventListener('click', handleClick);

@@ -33,6 +33,7 @@ section img:hover {
   opacity: 75%;
 }
 
+/* Button DIV element and its Hover */
 div {
   background-color: aliceblue;
   color: #202124;
