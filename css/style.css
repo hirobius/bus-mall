@@ -58,3 +58,9 @@ ul {
   line-height: 125%;
   text-align: right;
 }
+
+#chartGraph {
+  width: 548px;
+  height: 200px;
+  margin-top: 10px;
+}
