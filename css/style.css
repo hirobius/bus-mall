@@ -24,7 +24,7 @@ section {
 section img {
   margin: 20px;
   width: 140px;
-  max-height: 320px;
+  height: 140px;
   vertical-align: middle;
 }
 
@@ -59,8 +59,7 @@ ul {
   text-align: right;
 }
 
-#chartGraph {
+#chart {
   width: 548px;
-  height: 200px;
   margin-top: 10px;
 }
