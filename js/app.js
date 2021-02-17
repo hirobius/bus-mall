@@ -4,6 +4,7 @@ let totalClicks = 0;
 let clicksAllowed = 25;
 let allProducts = [];
 let indexArray = [];
+// key for shifting the new set of 3 images
 let uniqueImageCount = 6;
 let imageOne = document.querySelector('section img:first-child');
 let imageTwo = document.querySelector('section img:nth-child(2)');
@@ -42,7 +43,6 @@ new Product('wine-glass');
 function getRandomIndex() {
   return Math.floor(Math.random() * allProducts.length);
 }
-
 
 function renderProducts() {
   while (indexArray.length < uniqueImageCount) {
@@ -108,20 +108,26 @@ function renderChart() {
     data: {
       labels: productNames,
       datasets: [{
-        label: 'Clicks',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
+        label: 'Views',
+        backgroundColor: 'rgb(207, 204, 214)',
         data: productViews
       },
       {
-        label: 'Views',
-        backgroundColor: 'rgb(255, 99, 132)',
-        borderColor: 'rgb(255, 99, 132)',
+        label: 'Clicks',
+        backgroundColor: 'rgb(183, 181, 228)',
         data: productClicks
       }]
     },
-    // Configuration options go here
-    options: {}
+    responsive: false,
+    options: {
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true
+          }
+        }]
+      }
+    }
   });
 }
 
