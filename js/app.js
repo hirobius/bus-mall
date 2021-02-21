@@ -4,7 +4,6 @@ let totalClicks = 0;
 let clicksAllowed = 25;
 let allProducts = [];
 let indexArray = [];
-// key for shifting the new set of 3 images
 let uniqueImageCount = 6;
 let imageOne = document.querySelector('section img:first-child');
 let imageTwo = document.querySelector('section img:nth-child(2)');
@@ -101,10 +100,7 @@ function renderChart() {
 
   var ctx = document.getElementById('myChart').getContext('2d');
   var chart = new Chart(ctx, {
-    // The type of chart we want to create
     type: 'bar',
-
-    // The data for our dataset
     data: {
       labels: productNames,
       datasets: [{
